@@ -34,7 +34,6 @@ export function History() {
   }
 
   function handleRemove(id: string, index: number) {
-    swipeableRefs.current[index].close();
     Alert.alert(
       'Remover',
       'Deseja remover esse registro?',
@@ -42,11 +41,15 @@ export function History() {
         {
           text: 'Sim', onPress: () => remove(id)
         },
-        { text: 'Não', style: 'cancel' }
+        {
+          text: 'Não',
+          style: 'cancel',
+          onPress: () => swipeableRefs.current[index].close()
+        }
       ]
     );
-
   }
+
 
   useEffect(() => {
     fetchHistory();
@@ -85,16 +88,18 @@ export function History() {
                 }}
                 overshootLeft={false}
                 containerStyle={styles.swipeableContainer}
+                leftThreshold={10}
+                renderRightActions={() => null}
+                onSwipeableOpen={() => handleRemove(item.id, index)}
                 renderLeftActions={() => (
-                  <Pressable
-                    style={styles.swipeableRemove}
-                    onPress={() => handleRemove(item.id, index)}
+                  <View style={styles.swipeableRemove}
+
                   >
                     <Trash
                       size={32}
                       color={THEME.COLORS.GREY_100}
                     />
-                  </Pressable>
+                  </View>
                 )}
               >
                 <HistoryCard data={item} />
