@@ -26,8 +26,10 @@ export function OverlayFeedBack({ status }: Props) {
   useEffect(() => {
     opacity.value = withSequence(
       withTiming(1, { duration: 400, easing: Easing.bounce }),
-      withTiming(0)
+      withTiming(0),
     )
+    console.log('Status', status)
+
   }, [status])
 
   return (
